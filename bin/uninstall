@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+set -e
+
+# check ASDF environment variables
+[ -n "$ASDF_INSTALL_PATH" ] || (echo 'Missing ASDF_INSTALL_PATH' >&2 && exit 1)
+
+# uninstall
+rm -rf "${ASDF_INSTALL_PATH}"
