@@ -19,7 +19,7 @@ case "$(uname -s)" in
 		;;
 esac
 
-curl -fL -o "${downloadPath}/starship.ta.gz" "${DOWNLOAD_URL}"
+curl -fL -o "${downloadPath}/starship.tar.gz" "${DOWNLOAD_URL}"
 tar xzf starship.tar.gz
 mv ./starship "${toolPath}"
 chmod +x "${toolPath}"
