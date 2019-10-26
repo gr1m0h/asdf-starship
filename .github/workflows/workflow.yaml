@@ -1,0 +1,28 @@
+name: Main workflow
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macOS-latest]
+        starship: [0.25.0]
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+
+      - name: Install asdf-vm
+        run: git clone https://github.com/asdf-vm/asdf.git $HOME/asdf
+
+      - name: Install starship and run test
+        run: |
+          . $HOME/asdf/asdf.sh
+          asdf plugin-add starship $GITHUB_WORKSPACE
+          asdf list-all starship
+          asdf install starship ${{ matrix.starship }}
+          asdf global starship ${{ matrix.starship }}
+          starship --version
