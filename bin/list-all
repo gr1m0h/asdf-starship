@@ -2,8 +2,8 @@
 set -e
 
 release_path="https://api.github.com/repos/starship/starship/releases"
-cmd="curl -sf"
-if [ -n "$OAUTH_TOKEN" ]; then
+cmd="curl -s"
+if [  -n "$OAUTH_TOKEN" ]; then
   cmd="$cmd -H 'Authorization: token $OAUTH_TOKEN'"
 fi
 cmd="$cmd $release_path"
