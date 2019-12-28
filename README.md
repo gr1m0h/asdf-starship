@@ -5,5 +5,5 @@
 
 ## Install
 ```
-asdf plugin-add starship https://github.com/grimoh/asdf-starship.git
+asdf plugin-add starship
 ```
