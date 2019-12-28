@@ -1,19 +1,26 @@
 name: Main workflow
 
-on: [push, pull_request]
+on:
+  push:
+    paths-ignore:
+      - '**.md'
+  pull_request:
+    paths-ignore:
+      - '**.md'
+  schedule:
+    - cron: "0 0 * * 5"
 
 jobs:
   build:
     strategy:
       matrix:
         os: [ubuntu-latest, macOS-latest]
-        starship: [0.25.0]
 
     runs-on: ${{ matrix.os }}
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v1
+        uses: actions/checkout@v2
 
       - name: Install asdf-vm
         run: git clone https://github.com/asdf-vm/asdf.git $HOME/asdf
@@ -23,6 +30,4 @@ jobs:
           . $HOME/asdf/asdf.sh
           asdf plugin-add starship $GITHUB_WORKSPACE
           asdf list-all starship
-          asdf install starship ${{ matrix.starship }}
-          asdf global starship ${{ matrix.starship }}
-          starship --version
+          asdf install starship latest
