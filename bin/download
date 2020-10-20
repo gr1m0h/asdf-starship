@@ -10,7 +10,7 @@ case "$(uname -s)" in
 		DOWNLOAD_URL="https://github.com/starship/starship/releases/download/v${ASDF_INSTALL_VERSION}/starship-x86_64-apple-darwin.tar.gz"
 		;;
 	"Linux")
-		DOWNLOAD_URL="https://github.com/starship/starship/releases/download/v${ASDF_INSTALL_VERSION}/starship-x86_64-unknown-linux-gnu.tar.gz"
+		DOWNLOAD_URL="https://github.com/starship/starship/releases/download/v${ASDF_INSTALL_VERSION}/starship-x86_64-unknown-linux-musl.tar.gz"
 		;;
 esac
 
