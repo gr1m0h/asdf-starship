@@ -19,10 +19,14 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     steps:
-      - name: asdf plugin test
+      - name: checkout
         uses: actions/checkout@v2
+
+      - name: install asdf-vm
         run: git clone https://github.com/asdf-vm/asdf.git $HOME/asdf
-          . $HOME/asdf/asdf.sh
+
+      - name: install starship and run test
+        run: . $HOME/asdf/asdf.sh
           asdf plugin add starship $GITHUB_WORKSPACE
           asdf list all starship
           asdf install starship latest
