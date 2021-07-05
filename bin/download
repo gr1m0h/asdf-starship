@@ -6,19 +6,19 @@ set -e
 [ -n "$ASDF_DOWNLOAD_PATH" ] || (echo 'Missing ASDF_DOWNLOAD_PATH' >&2 && exit 1)
 
 case "$(uname -s)" in
-	"Darwin")
-		DOWNLOAD_URL="https://github.com/starship/starship/releases/download/v${ASDF_INSTALL_VERSION}/starship-x86_64-apple-darwin.tar.gz"
-		;;
-	"Linux")
-		case "$(uname -m)" in
-			"armv7l")
-				DOWNLOAD_URL="https://github.com/starship/starship/releases/download/v${ASDF_INSTALL_VERSION}/starship-arm-unknown-linux-musleabihf.tar.gz"
-				;;
-			"x86_64")
-				DOWNLOAD_URL="https://github.com/starship/starship/releases/download/v${ASDF_INSTALL_VERSION}/starship-x86_64-unknown-linux-musl.tar.gz"
-				;;
-		esac
-		;;
+  "Darwin")
+    DOWNLOAD_URL="https://github.com/starship/starship/releases/download/v${ASDF_INSTALL_VERSION}/starship-x86_64-apple-darwin.tar.gz"
+    ;;
+  "Linux")
+    case "$(uname -m)" in
+      "armv7l")
+        DOWNLOAD_URL="https://github.com/starship/starship/releases/download/v${ASDF_INSTALL_VERSION}/starship-arm-unknown-linux-musleabihf.tar.gz"
+        ;;
+      "x86_64")
+        DOWNLOAD_URL="https://github.com/starship/starship/releases/download/v${ASDF_INSTALL_VERSION}/starship-x86_64-unknown-linux-musl.tar.gz"
+        ;;
+    esac
+    ;;
 esac
 
 curl -fL -o "${ASDF_DOWNLOAD_PATH}/starship.tar.gz" "${DOWNLOAD_URL}"
