@@ -24,6 +24,9 @@ case "$(uname -s)" in
       "x86_64")
         DOWNLOAD_URL="https://github.com/starship/starship/releases/download/v${ASDF_INSTALL_VERSION}/starship-x86_64-unknown-linux-musl.tar.gz"
         ;;
+      "aarch64")
+        DOWNLOAD_URL="https://github.com/starship/starship/releases/download/v${ASDF_INSTALL_VERSION}/starship-aarch64-unknown-linux-musl.tar.gz"
+        ;;
     esac
     ;;
 esac
