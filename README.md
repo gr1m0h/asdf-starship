@@ -4,7 +4,7 @@
 
 [Starship](https://github.com/starship/starship) plugin for [asdf](https://github.com/asdf-vm/asdf) version manager
 
-## Install
+## Installation
 
 Install the plugin:
 
