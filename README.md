@@ -1,4 +1,4 @@
-[![GitHub Actions Status](https://github.com/grimoh/asdf-starship/workflows/Main%20workflow/badge.svg?branch=master)](https://github.com/grimoh/asdf-starship/actions)
+[![GitHub Actions Status](https://github.com/gr1m0h/asdf-starship/workflows/Main%20workflow/badge.svg?branch=main)](https://github.com/gr1m0h/asdf-starship/actions)
 
 # asdf-starship
 
