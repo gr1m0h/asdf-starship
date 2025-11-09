@@ -2,8 +2,12 @@
 
 set -euo pipefail
 
-shellcheck --shell=bash --external-sources \
-	bin/*
+# Run shellcheck on all bin scripts
+echo "Running shellcheck..."
+shellcheck --shell=bash --external-sources bin/*
 
-shfmt --language-dialect bash --diff \
-	bin/*
+# Run shfmt check on all bin scripts  
+echo "Running shfmt..."
+shfmt --language-dialect bash --diff bin/*
+
+echo "Linting completed successfully!"
