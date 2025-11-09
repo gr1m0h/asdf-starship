@@ -5,19 +5,26 @@ set -e
 [ -n "$ASDF_INSTALL_VERSION" ] || (echo 'Missing ASDF_INSTALL_VERSION' >&2 && exit 1)
 [ -n "$ASDF_DOWNLOAD_PATH" ] || (echo 'Missing ASDF_DOWNLOAD_PATH' >&2 && exit 1)
 
-case "$(uname -s)" in
+platform="$(uname -s)"
+architecture="$(uname -m)"
+
+case "$platform" in
   "Darwin")
-    case "$(uname -m)" in
+    case "$architecture" in
       "arm64")
         DOWNLOAD_URL="https://github.com/starship/starship/releases/download/v${ASDF_INSTALL_VERSION}/starship-aarch64-apple-darwin.tar.gz"
         ;;
       "x86_64")
         DOWNLOAD_URL="https://github.com/starship/starship/releases/download/v${ASDF_INSTALL_VERSION}/starship-x86_64-apple-darwin.tar.gz"
         ;;
+      *)
+        echo "Unsupported macOS architecture: $architecture" >&2
+        exit 1
+        ;;
     esac
     ;;
   "Linux")
-    case "$(uname -m)" in
+    case "$architecture" in
       "armv7l")
         DOWNLOAD_URL="https://github.com/starship/starship/releases/download/v${ASDF_INSTALL_VERSION}/starship-arm-unknown-linux-musleabihf.tar.gz"
         ;;
@@ -27,8 +34,19 @@ case "$(uname -s)" in
       "aarch64")
         DOWNLOAD_URL="https://github.com/starship/starship/releases/download/v${ASDF_INSTALL_VERSION}/starship-aarch64-unknown-linux-musl.tar.gz"
         ;;
+      *)
+        echo "Unsupported Linux architecture: $architecture" >&2
+        exit 1
+        ;;
     esac
     ;;
+  *)
+    echo "Unsupported platform: $platform" >&2
+    exit 1
+    ;;
 esac
+
+# Verify that DOWNLOAD_URL was set
+[ -n "$DOWNLOAD_URL" ] || (echo 'Failed to determine download URL' >&2 && exit 1)
 
 curl -fL -o "${ASDF_DOWNLOAD_PATH}/starship.tar.gz" "${DOWNLOAD_URL}"
