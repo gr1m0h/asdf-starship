@@ -3,7 +3,7 @@ set -e
 
 release_path="https://api.github.com/repos/starship/starship/releases"
 cmd="curl -s"
-if [  -n "$GITHUB_API_TOKEN" ]; then
+if [ -n "$GITHUB_API_TOKEN" ]; then
   cmd="$cmd -H 'Authorization: token $GITHUB_API_TOKEN'"
 fi
 cmd="$cmd $release_path"
