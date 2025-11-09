@@ -17,8 +17,8 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@08eba0b27e820071cde6df949e0beb9ba4906955 # v4.3.0
       - name: Test plugin
-        uses: asdf-vm/actions/plugin-test@v4
+        uses: asdf-vm/actions/plugin-test@1902764435ca0dd2f3388eea723a4f92a4eb8302 # v4.0.0
         with:
           command: starship --version
