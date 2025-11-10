@@ -2,8 +2,8 @@
 set -e
 
 # check ASDF environment variables
-[ -n "$ASDF_INSTALL_VERSION" ] || (echo 'Missing ASDF_INSTALL_VERSION' >&2 && exit 1)
-[ -n "$ASDF_INSTALL_PATH" ] || (echo 'Missing ASDF_INSTALL_PATH' >&2 && exit 1)
+[ -n "$ASDF_INSTALL_VERSION" ] || { echo 'Missing ASDF_INSTALL_VERSION' >&2; exit 1; }
+[ -n "$ASDF_INSTALL_PATH" ] || { echo 'Missing ASDF_INSTALL_PATH' >&2; exit 1; }
 
 mkdir -p "${ASDF_INSTALL_PATH}/bin"
 toolPath="${ASDF_INSTALL_PATH}/bin/starship"
@@ -58,7 +58,7 @@ else
   esac
 
   # Verify that DOWNLOAD_URL was set
-  [ -n "$DOWNLOAD_URL" ] || (echo 'Failed to determine download URL' >&2 && exit 1)
+  [ -n "$DOWNLOAD_URL" ] || { echo 'Failed to determine download URL' >&2; exit 1; }
 
   # Create temp directory for download
   tmpdir=$(mktemp -d)
