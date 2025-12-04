@@ -8,5 +8,5 @@ if [  -n "$GITHUB_API_TOKEN" ]; then
 fi
 cmd="$cmd $release_path"
 
-versions=$(eval $cmd | sed -nE 's/^    "tag_name": "v(.+)",$/\1/pg' | sed -n -e '1!G;h;$p')
+versions=$(eval $cmd | sed -nE 's/^[[:space:]]+"tag_name": "v(.+)",$/\1/pg' | sed -n -e '1!G;h;$p')
 echo $versions
