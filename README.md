@@ -1,6 +1,6 @@
 # asdf-starship
 
-[![Main workflow](https://github.com/gr1m0h/asdf-starship/actions/workflows/workflow.yaml/badge.svg)](https://github.com/gr1m0h/asdf-starship/actions/workflows/workflow.yaml)
+[![Build](https://github.com/gr1m0h/asdf-starship/actions/workflows/build.yaml/badge.svg)](https://github.com/gr1m0h/asdf-starship/actions/workflows/build.yaml)
 [![Lint](https://github.com/gr1m0h/asdf-starship/actions/workflows/lint.yaml/badge.svg)](https://github.com/gr1m0h/asdf-starship/actions/workflows/lint.yaml)
 
 [Starship](https://github.com/starship/starship) plugin for the [asdf](https://github.com/asdf-vm/asdf) version manager.
