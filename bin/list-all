@@ -1,12 +1,20 @@
 #!/usr/bin/env bash
-set -e
+
+set -euo pipefail
 
 release_path="https://api.github.com/repos/starship/starship/releases"
-cmd="curl -s"
-if [  -n "$GITHUB_API_TOKEN" ]; then
-  cmd="$cmd -H 'Authorization: token $GITHUB_API_TOKEN'"
-fi
-cmd="$cmd $release_path"
 
-versions=$(eval $cmd | sed -nE 's/^    "tag_name": "v(.+)",$/\1/pg' | sed -n -e '1!G;h;$p')
+if [ -n "${GITHUB_API_TOKEN:-}" ]; then
+	response=$(curl -s -H "Authorization: token ${GITHUB_API_TOKEN}" "$release_path")
+else
+	response=$(curl -s "$release_path")
+fi
+
+versions=$(printf '%s\n' "$response" |
+	sed -nE 's/^    "tag_name": "v(.+)",$/\1/pg' |
+	sed -n -e '1!G;h;$p')
+
+# asdf expects all versions on a single, space-separated line, so the
+# word-splitting performed by an unquoted expansion is intentional here.
+# shellcheck disable=SC2086
 echo $versions
