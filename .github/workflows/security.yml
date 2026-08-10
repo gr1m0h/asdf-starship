@@ -8,17 +8,17 @@ permissions:
 
 jobs:
   osv-scan:
-    uses: gr1m0h/.github/.github/workflows/osv-scanner.yml@bfd9d34d379bce643b84d63b33abc6c6bc13227a
+    uses: gr1m0h/.github/.github/workflows/osv-scanner.yml@dcf77fa04b0292652605c3d83fa16fcbe2d83f23
     permissions:
       contents: read
       security-events: write
   gitleaks:
-    uses: gr1m0h/.github/.github/workflows/gitleaks.yml@bfd9d34d379bce643b84d63b33abc6c6bc13227a
+    uses: gr1m0h/.github/.github/workflows/gitleaks.yml@dcf77fa04b0292652605c3d83fa16fcbe2d83f23
   dependency-review:
     if: github.event_name == 'pull_request'
-    uses: gr1m0h/.github/.github/workflows/dependency-review.yml@bfd9d34d379bce643b84d63b33abc6c6bc13227a
+    uses: gr1m0h/.github/.github/workflows/dependency-review.yml@dcf77fa04b0292652605c3d83fa16fcbe2d83f23
     permissions:
       contents: read
       pull-requests: write
   actionlint:
-    uses: gr1m0h/.github/.github/workflows/actions-pin-lint.yml@bfd9d34d379bce643b84d63b33abc6c6bc13227a
+    uses: gr1m0h/.github/.github/workflows/actions-pin-lint.yml@dcf77fa04b0292652605c3d83fa16fcbe2d83f23
