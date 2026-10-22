@@ -1,29 +1,26 @@
 # <target-repo>/.github/workflows/security.yml
 name: security
 on:
-  schedule:
-    - cron: '23 3 * * 1'
   pull_request:
-  workflow_dispatch:
 permissions:
   contents: read
 
 jobs:
   osv-scan:
-    uses: gr1m0h/.github/.github/workflows/osv-scanner.yml@3339cb3918ec1c174852189752e314ee67cb414f
+    uses: gr1m0h/.github/.github/workflows/osv-scanner.yml@606611298d9d15d547ac70dd3b9e9554f1316c08
     permissions:
       contents: read
       security-events: write
   gitleaks:
-    uses: gr1m0h/.github/.github/workflows/gitleaks.yml@3339cb3918ec1c174852189752e314ee67cb414f
+    uses: gr1m0h/.github/.github/workflows/gitleaks.yml@606611298d9d15d547ac70dd3b9e9554f1316c08
     permissions:
       contents: read
       pull-requests: read
   dependency-review:
     if: github.event_name == 'pull_request' && github.event.repository.private == false
-    uses: gr1m0h/.github/.github/workflows/dependency-review.yml@3339cb3918ec1c174852189752e314ee67cb414f
+    uses: gr1m0h/.github/.github/workflows/dependency-review.yml@606611298d9d15d547ac70dd3b9e9554f1316c08
     permissions:
       contents: read
       pull-requests: read
   actionlint:
-    uses: gr1m0h/.github/.github/workflows/actions-pin-lint.yml@3339cb3918ec1c174852189752e314ee67cb414f
+    uses: gr1m0h/.github/.github/workflows/actions-pin-lint.yml@606611298d9d15d547ac70dd3b9e9554f1316c08
