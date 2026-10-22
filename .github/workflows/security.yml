@@ -1,10 +1,7 @@
 # <target-repo>/.github/workflows/security.yml
 name: security
 on:
-  schedule:
-    - cron: '23 3 * * 1'
   pull_request:
-  workflow_dispatch:
 permissions:
   contents: read
 

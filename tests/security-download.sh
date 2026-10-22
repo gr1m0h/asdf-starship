@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 set -euo pipefail
-repo=${1:-$(cd "$(dirname "$0")/.." && pwd)}
-repo=$(cd "$repo" && pwd)
+repo=$(cd "$(dirname "$0")/.." && pwd)
 work=$(mktemp -d)
 trap 'rm -rf "$work"' EXIT
 mkdir -p "$work/bin" "$work/download"
 printf 'payload\n' >"$work/payload"
-export TEST_HASH
+export TEST_HASH TEST_ASSET
+TEST_ASSET=starship-aarch64-apple-darwin.tar.gz
 TEST_HASH=$(shasum -a 256 "$work/payload" | cut -d ' ' -f 1)
 cat >"$work/bin/uname" <<'MOCK'
 #!/usr/bin/env bash
@@ -26,7 +26,7 @@ case "$url" in
     [ "${TEST_MODE:-}" != missing ] || { echo 'unrelated' > "$out"; exit 0; }
     hash=$TEST_HASH
     [ "${TEST_MODE:-}" != mismatch ] || hash=0000000000000000000000000000000000000000000000000000000000000000
-    for name in act_Darwin_arm64.tar.gz k6-v1.2.3-macos-arm64.zip starship-aarch64-apple-darwin.tar.gz vegeta-1.2.3-darwin-arm64.tar.gz vegeta_1.2.3_darwin_arm64.tar.gz; do printf '%s  %s\n' "$hash" "$name"; done > "$out"
+    printf '%s  %s\n' "$hash" "$TEST_ASSET" > "$out"
     ;;
   *) printf 'payload\n' > "$out" ;;
 esac
@@ -41,17 +41,13 @@ for TEST_MODE in fail; do
 		exit 1
 	fi
 done
-case "${repo##*/}" in
-asdf-act | asdf-k6 | asdf-starship | asdf-vegeta)
-	for TEST_MODE in missing mismatch; do
-		export TEST_MODE
-		if bash "$repo/bin/download" >/dev/null 2>&1; then
-			echo "accepted $TEST_MODE" >&2
-			exit 1
-		fi
-	done
-	;;
-esac
+for TEST_MODE in missing mismatch; do
+	export TEST_MODE
+	if bash "$repo/bin/download" >/dev/null 2>&1; then
+		echo "accepted $TEST_MODE" >&2
+		exit 1
+	fi
+done
 unset TEST_MODE
 ASDF_INSTALL_VERSION='../evil'
 export ASDF_INSTALL_VERSION
