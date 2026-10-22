@@ -1,5 +1,11 @@
 #!/usr/bin/env bash
-set -e
+set -euo pipefail
+
+# Versions form part of an upstream URL; reject paths, queries and shell input.
+if [[ ! ${ASDF_INSTALL_VERSION:-} =~ ^[0-9]+\.[0-9]+\.[0-9]+([.-][0-9A-Za-z.-]+)?$ ]]; then
+	echo "Invalid ASDF_INSTALL_VERSION" >&2
+	exit 1
+fi
 
 # check ASDF environment variables
 [ -n "$ASDF_INSTALL_VERSION" ] || (echo 'Missing ASDF_INSTALL_VERSION' >&2 && exit 1)
@@ -31,4 +37,29 @@ case "$(uname -s)" in
 	;;
 esac
 
-curl -fL -o "${ASDF_DOWNLOAD_PATH}/starship.tar.gz" "${DOWNLOAD_URL}"
+curl --proto "=https" --proto-redir "=https" --tlsv1.2 -fL -o "${ASDF_DOWNLOAD_PATH}/starship.tar.gz" "${DOWNLOAD_URL}"
+
+# Verify the exact asset, never an arbitrary entry from the checksum manifest.
+checksum_file=$(mktemp)
+trap 'rm -f "$checksum_file"' EXIT
+curl --proto '=https' --proto-redir '=https' --tlsv1.2 -fsSL "${DOWNLOAD_URL}.sha256" -o "$checksum_file"
+asset_url="${DOWNLOAD_URL}"
+asset_name=${asset_url##*/}
+expected=$(awk -v name="$asset_name" '$2 == name || $2 == "*" name {print $1}' "$checksum_file")
+# Starship also publishes checksum-only sidecars.
+if [ -z "$expected" ]; then expected=$(awk 'NF == 1 {print $1}' "$checksum_file"); fi
+if [[ ! $expected =~ ^[[:xdigit:]]{64}$ ]]; then
+	echo "Missing or invalid SHA-256 for $asset_name" >&2
+	exit 1
+fi
+if command -v sha256sum >/dev/null 2>&1; then
+	actual=$(sha256sum "${ASDF_DOWNLOAD_PATH}/starship.tar.gz")
+else
+	actual=$(shasum -a 256 "${ASDF_DOWNLOAD_PATH}/starship.tar.gz")
+fi
+actual=${actual%% *}
+if [ "$actual" != "$expected" ]; then
+	rm -f "${ASDF_DOWNLOAD_PATH}/starship.tar.gz"
+	echo "SHA-256 mismatch for $asset_name" >&2
+	exit 1
+fi
