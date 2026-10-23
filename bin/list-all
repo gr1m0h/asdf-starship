@@ -2,19 +2,15 @@
 
 set -euo pipefail
 
-release_path="https://api.github.com/repos/starship/starship/releases"
+# Git refs avoid GitHub's unauthenticated REST API rate limit and JSON layout.
+versions=$(git ls-remote --tags --refs https://github.com/starship/starship.git |
+	awk '$2 ~ /^refs\/tags\/v[0-9]+\.[0-9]+\.[0-9]+$/ {sub(/^refs\/tags\/v/, "", $2); print $2}' |
+	sort -t. -k1,1n -k2,2n -k3,3n -u)
 
-if [ -n "${GITHUB_API_TOKEN:-}" ]; then
-	response=$(curl -s -H "Authorization: token ${GITHUB_API_TOKEN}" "$release_path")
-else
-	response=$(curl -s "$release_path")
+if [ -z "$versions" ]; then
+	echo "No stable starship versions found" >&2
+	exit 1
 fi
 
-versions=$(printf '%s\n' "$response" |
-	sed -nE 's/^    "tag_name": "v(.+)",$/\1/pg' |
-	sed -n -e '1!G;h;$p')
-
-# asdf expects all versions on a single, space-separated line, so the
-# word-splitting performed by an unquoted expansion is intentional here.
-# shellcheck disable=SC2086
-echo $versions
+printf '%s\n' "$versions" | tr '\n' ' ' | sed 's/ $//'
+printf '\n'
